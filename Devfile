@@ -1,0 +1,76 @@
+schemaVersion: 2.3.0
+metadata:
+  name: terraform-dev
+  version: 1.0.0
+  description: A devfile for Terraform development and testing.
+  projectType: Infrastructure-as-Code
+  language: HCL
+  provider: Open Source
+  tags: ['Terraform', 'IaC']
+  displayName: Terraform Development Environment
+  icon: https://www.terraform.io/assets/images/og-image-8b3e4f7d.png
+
+components:
+  - name: terraform
+    container:
+      image: hashicorp/terraform:latest
+      env:
+        - name: TF_LOG
+          value: TRACE
+      volumeMounts:
+        - name: terraform-config
+          path: /workspace
+
+  - name: terraform-docs
+    container:
+      image: quay.io/terraform-docs/terraform-docs:latest
+      env:
+        - name: TF_DOCS_LOG
+          value: DEBUG
+      volumeMounts:
+        - name: terraform-config
+          path: /workspace
+
+commands:
+  - id: init
+    exec:
+      commandLine: terraform init
+      component: terraform
+      workingDir: /workspace
+      group:
+        kind: build
+        isDefault: true
+
+  - id: validate
+    exec:
+      commandLine: terraform validate
+      component: terraform
+      workingDir: /workspace
+      group:
+        kind: test
+        isDefault: true
+
+  - id: lint
+    exec:
+      commandLine: terraform fmt -check
+      component: terraform
+      workingDir: /workspace
+      group:
+        kind: test
+        isDefault: false
+
+  - id: docs
+    exec:
+      commandLine: terraform-docs markdown /workspace
+      component: terraform-docs
+      workingDir: /workspace
+      group:
+        kind: build
+        isDefault: false
+
+starterProjects:
+  - name: terraform-starter
+    description: A starter project for Terraform.
+    git:
+      remotes:
+        origin: https://github.com/example/terraform-starter.git
