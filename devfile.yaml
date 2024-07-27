@@ -13,13 +13,16 @@ metadata:
 components:
   - name: terraform
     container:
-      image: docker.io/hashicorp/terraform:latest
+      image: hashicorp/terraform:1.0.11
       env:
         - name: TF_LOG
           value: TRACE
       volumeMounts:
         - name: terraform-config
           path: /workspace
+      entrypoint:
+        command: ['sleep']
+        args: ['infinity']
 
   - name: terraform-docs
     container:
@@ -30,6 +33,9 @@ components:
       volumeMounts:
         - name: terraform-config
           path: /workspace
+      entrypoint:
+        command: ['sleep']
+        args: ['infinity']
 
   - name: terraform-config
     volume:
