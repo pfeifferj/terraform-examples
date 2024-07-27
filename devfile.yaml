@@ -31,6 +31,10 @@ components:
         - name: terraform-config
           path: /workspace
 
+  - name: terraform-config
+    volume:
+      size: 1Gi
+
 commands:
   - id: init
     exec:
