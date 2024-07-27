@@ -20,9 +20,8 @@ components:
       volumeMounts:
         - name: terraform-config
           path: /workspace
-      entrypoint:
-        command: ['sleep']
-        args: ['infinity']
+      command: ['sleep']
+      args: ['infinity']
 
   - name: terraform-docs
     container:
@@ -33,9 +32,8 @@ components:
       volumeMounts:
         - name: terraform-config
           path: /workspace
-      entrypoint:
-        command: ['sleep']
-        args: ['infinity']
+      command: ['sleep']
+      args: ['infinity']
 
   - name: terraform-config
     volume:
