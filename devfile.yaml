@@ -13,7 +13,7 @@ metadata:
 components:
   - name: terraform
     container:
-      image: hashicorp/terraform:latest
+      image: hashicorp/terraform:1.0.11 # Specify a version instead of 'latest'
       env:
         - name: TF_LOG
           value: TRACE
