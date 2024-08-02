@@ -15,7 +15,7 @@ components:
     container:
       image: hashicorp/terraform:latest
       memoryLimit: 512Mi
-      cpuLimit: 1
+      cpuLimit: "1"
       mountSources: true
       volumeMounts:
         - name: terraform-data
