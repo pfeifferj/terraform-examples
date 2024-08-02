@@ -41,6 +41,11 @@ components:
         - name: terraform-data
           path: /workspace
 
+  - name: terraform-data
+    volume:
+      size: 1Gi
+      ephemeral: true
+
 commands:
   - id: terraform-init
     exec:
@@ -86,8 +91,3 @@ commands:
       group:
         kind: build
         isDefault: false
-
-volumes:
-  - name: terraform-data
-    ephemeral: true
-
