@@ -13,72 +13,35 @@ metadata:
 components:
   - name: terraform
     container:
-      image: hashicorp/terraform:1.0.11
-      env:
-        - name: TF_LOG
-          value: TRACE
-      volumeMounts:
-        - name: terraform-config
-          path: /workspace
+      image: hashicorp/terraform:latest
       command: ['sleep']
       args: ['infinity']
-
+      memoryLimit: 512Mi
+      mountSources: true
+      volumeMounts:
+        - name: terraform-vol
+          path: /workspace
+      endpoints:
+        - name: terraform
+          targetPort: 80
   - name: terraform-docs
     container:
       image: quay.io/terraform-docs/terraform-docs:latest
-      env:
-        - name: TF_DOCS_LOG
-          value: DEBUG
+      memoryLimit: 512Mi
+      mountSources: true
       volumeMounts:
-        - name: terraform-config
+        - name: terraform-vol
           path: /workspace
-      command: ['sleep']
-      args: ['infinity']
-
-  - name: terraform-config
-    volume:
-      size: 1Gi
-
 commands:
-  - id: init
-    exec:
-      commandLine: terraform init
-      component: terraform
-      workingDir: /workspace
-      group:
-        kind: build
-        isDefault: true
-
-  - id: validate
-    exec:
-      commandLine: terraform validate
-      component: terraform
-      workingDir: /workspace
-      group:
-        kind: test
-        isDefault: true
-
-  - id: lint
-    exec:
-      commandLine: terraform fmt -check
-      component: terraform
-      workingDir: /workspace
-      group:
-        kind: test
-        isDefault: false
-
-  - id: docs
-    exec:
-      commandLine: terraform-docs markdown /workspace
-      component: terraform-docs
-      workingDir: /workspace
-      group:
-        kind: build
-        isDefault: false
-
-starterProjects:
-  - name: terraform-starter
-    description: A starter project for Terraform.
-    git:
-      remotes:
-        origin: https://github.com/example/terraform-starter.git
+  - name: terraform-lint
+    command: ["terraform", "fmt", "-check"]
+    component: terraform
+  - name: terraform-plan
+    command: ["terraform", "plan"]
+    component: terraform
+  - name: terraform-docs
+    command: ["terraform-docs", "markdown", "/workspace"]
+    component: terraform-docs
+volumes:
+  - name: terraform-vol
+    ephemeral: true
