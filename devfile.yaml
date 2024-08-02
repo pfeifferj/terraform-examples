@@ -25,7 +25,7 @@ components:
     container:
       image: quay.io/terraform-docs/terraform-docs:latest
       memoryLimit: 128Mi
-      cpuLimit: 0.5
+      cpuLimit: "0.5"
       mountSources: true
       volumeMounts:
         - name: terraform-data
@@ -35,7 +35,7 @@ components:
     container:
       image: ghcr.io/terraform-linters/tflint:latest
       memoryLimit: 128Mi
-      cpuLimit: 0.5
+      cpuLimit: "0.5"
       mountSources: true
       volumeMounts:
         - name: terraform-data
