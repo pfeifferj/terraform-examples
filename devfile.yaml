@@ -14,34 +14,80 @@ components:
   - name: terraform
     container:
       image: hashicorp/terraform:latest
-      command: ['sleep']
-      args: ['infinity']
       memoryLimit: 512Mi
+      cpuLimit: 1
       mountSources: true
       volumeMounts:
-        - name: terraform-vol
+        - name: terraform-data
           path: /workspace
-      endpoints:
-        - name: terraform
-          targetPort: 80
+
   - name: terraform-docs
     container:
       image: quay.io/terraform-docs/terraform-docs:latest
-      memoryLimit: 512Mi
+      memoryLimit: 128Mi
+      cpuLimit: 0.5
       mountSources: true
       volumeMounts:
-        - name: terraform-vol
+        - name: terraform-data
           path: /workspace
-commands:
+
   - name: terraform-lint
-    command: ["terraform", "fmt", "-check"]
-    component: terraform
-  - name: terraform-plan
-    command: ["terraform", "plan"]
-    component: terraform
-  - name: terraform-docs
-    command: ["terraform-docs", "markdown", "/workspace"]
-    component: terraform-docs
+    container:
+      image: ghcr.io/terraform-linters/tflint:latest
+      memoryLimit: 128Mi
+      cpuLimit: 0.5
+      mountSources: true
+      volumeMounts:
+        - name: terraform-data
+          path: /workspace
+
+commands:
+  - id: terraform-init
+    exec:
+      component: terraform
+      commandLine: "terraform init"
+      workingDir: /workspace
+      group:
+        kind: build
+        isDefault: true
+
+  - id: terraform-plan
+    exec:
+      component: terraform
+      commandLine: "terraform plan"
+      workingDir: /workspace
+      group:
+        kind: build
+        isDefault: false
+
+  - id: terraform-apply
+    exec:
+      component: terraform
+      commandLine: "terraform apply -auto-approve"
+      workingDir: /workspace
+      group:
+        kind: build
+        isDefault: false
+
+  - id: terraform-lint
+    exec:
+      component: terraform-lint
+      commandLine: "tflint"
+      workingDir: /workspace
+      group:
+        kind: build
+        isDefault: false
+
+  - id: generate-docs
+    exec:
+      component: terraform-docs
+      commandLine: "terraform-docs markdown ."
+      workingDir: /workspace
+      group:
+        kind: build
+        isDefault: false
+
 volumes:
-  - name: terraform-vol
+  - name: terraform-data
     ephemeral: true
+
