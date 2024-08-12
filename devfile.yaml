@@ -20,6 +20,8 @@ components:
       volumeMounts:
         - name: terraform-data
           path: /workspace
+      command: ["/bin/sh"]
+      args: ["-c", "while true; do sleep 1000; done"]
 
   - name: terraform-docs
     container:
@@ -30,8 +32,8 @@ components:
       volumeMounts:
         - name: terraform-data
           path: /workspace
-      command: ["terraform-docs"]
-      args: ["markdown", "."]
+      command: ["/bin/sh"]
+      args: ["-c", "while true; do sleep 1000; done"]
 
   - name: terraform-lint
     container:
@@ -42,6 +44,8 @@ components:
       volumeMounts:
         - name: terraform-data
           path: /workspace
+      command: ["/bin/sh"]
+      args: ["-c", "while true; do sleep 1000; done"]
 
   - name: terraform-data
     volume:
