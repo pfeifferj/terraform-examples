@@ -1,6 +1,6 @@
 schemaVersion: 2.3.0
 metadata:
-  name: terraform-dev
+  generateNme: terraform-dev
   version: 1.0.0
   description: A devfile for Terraform development and testing.
   projectType: Infrastructure-as-Code
@@ -9,6 +9,8 @@ metadata:
   tags: ['Terraform', 'IaC']
   displayName: Terraform Development Environment
   icon: https://www.terraform.io/assets/images/og-image-8b3e4f7d.png
+attributes:
+  controller.devfile.io/storage-type: ephemeral
 
 components:
   - name: terraform
