@@ -11,41 +11,15 @@ metadata:
   icon: https://www.terraform.io/assets/images/og-image-8b3e4f7d.png
 
 components:
-  - name: terraform
+  - name: terraform-tools
     container:
-      image: docker.io/hashicorp/terraform:latest
+      image: quay.io/pfeifferj/tfdev:latest
       memoryLimit: 512Mi
       cpuLimit: "1"
       mountSources: true
       volumeMounts:
         - name: terraform-data
           path: /workspace
-      command: ["/bin/sh"]
-      args: ["-c", "while true; do sleep 1000; done"]
-
-  - name: terraform-docs
-    container:
-      image: quay.io/terraform-docs/terraform-docs:latest
-      memoryLimit: 256Mi
-      cpuLimit: "1"
-      mountSources: true
-      volumeMounts:
-        - name: terraform-data
-          path: /workspace
-      command: ["/bin/sh"]
-      args: ["-c", "while true; do sleep 1000; done"]
-
-  - name: terraform-lint
-    container:
-      image: ghcr.io/terraform-linters/tflint:latest
-      memoryLimit: 128Mi
-      cpuLimit: "0.5"
-      mountSources: true
-      volumeMounts:
-        - name: terraform-data
-          path: /workspace
-      command: ["/bin/sh"]
-      args: ["-c", "while true; do sleep 1000; done"]
 
   - name: terraform-data
     volume:
