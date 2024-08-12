@@ -24,12 +24,14 @@ components:
   - name: terraform-docs
     container:
       image: quay.io/terraform-docs/terraform-docs:latest
-      memoryLimit: 128Mi
-      cpuLimit: "0.5"
+      memoryLimit: 256Mi
+      cpuLimit: "1"
       mountSources: true
       volumeMounts:
         - name: terraform-data
           path: /workspace
+      command: ["terraform-docs"]
+      args: ["markdown", "."]
 
   - name: terraform-lint
     container:
