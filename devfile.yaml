@@ -9,8 +9,6 @@ metadata:
   tags: ['Terraform', 'IaC']
   displayName: Terraform Development Environment
   icon: https://www.terraform.io/assets/images/og-image-8b3e4f7d.png
-attributes:
-  controller.devfile.io/storage-type: ephemeral
 
 components:
   - name: terraform
