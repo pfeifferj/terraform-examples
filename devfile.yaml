@@ -9,6 +9,15 @@ metadata:
   tags: ['Terraform', 'IaC']
   displayName: Terraform Development Environment
   icon: https://www.terraform.io/assets/images/og-image-8b3e4f7d.png
+attributes:
+  .vscode/extensions.json: |
+    {
+      "recommendations": [
+        "hashicorp.terraform"
+      ]
+    }
+  .che/che-theia-plugins.yaml: |
+    - id: hashicorp/terraform/latest
 
 components:
   - name: terraform-tools
@@ -29,7 +38,7 @@ components:
 commands:
   - id: terraform-init
     exec:
-      component: terraform
+      component: terraform-tools
       commandLine: "terraform init"
       workingDir: /workspace
       group:
@@ -38,7 +47,7 @@ commands:
 
   - id: terraform-plan
     exec:
-      component: terraform
+      component: terraform-tools
       commandLine: "terraform plan"
       workingDir: /workspace
       group:
@@ -47,7 +56,7 @@ commands:
 
   - id: terraform-apply
     exec:
-      component: terraform
+      component: terraform-tools
       commandLine: "terraform apply -auto-approve"
       workingDir: /workspace
       group:
@@ -56,7 +65,7 @@ commands:
 
   - id: terraform-lint
     exec:
-      component: terraform-lint
+      component: terraform-tools
       commandLine: "tflint"
       workingDir: /workspace
       group:
@@ -65,7 +74,7 @@ commands:
 
   - id: generate-docs
     exec:
-      component: terraform-docs
+      component: terraform-tools
       commandLine: "terraform-docs markdown ."
       workingDir: /workspace
       group:
